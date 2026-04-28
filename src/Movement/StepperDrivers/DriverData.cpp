@@ -19,6 +19,8 @@ constexpr ObjectModelTableEntry DriverData::objectModelTable[] =
 
 	// 1. closedLoop members
 	{ "currentFraction",	OBJECT_MODEL_FUNC(self, 2), 								ObjectModelEntryFlags::liveNotPanelDue },
+	{ "encoderDegrees",     OBJECT_MODEL_FUNC(self->encoderDegrees, 2),                 ObjectModelEntryFlags::liveNotPanelDue },
+	{ "encoderPosition",    OBJECT_MODEL_FUNC((int32_t)self->encoderPosition),          ObjectModelEntryFlags::liveNotPanelDue },
 	{ "positionError",		OBJECT_MODEL_FUNC(self, 3), 								ObjectModelEntryFlags::liveNotPanelDue },
 
 	// 2. closedLoop.currentFraction members
@@ -30,7 +32,7 @@ constexpr ObjectModelTableEntry DriverData::objectModelTable[] =
 	{ "rms",				OBJECT_MODEL_FUNC((float)self->rmsPositionError, 2), 		ObjectModelEntryFlags::liveNotPanelDue },
 };
 
-constexpr uint8_t DriverData::objectModelTableDescriptor[] = { 4, 2, 2, 2, 2 };
+constexpr uint8_t DriverData::objectModelTableDescriptor[] = { 4, 2, 4, 2, 2 };
 
 DEFINE_GET_OBJECT_MODEL_TABLE(DriverData)
 
