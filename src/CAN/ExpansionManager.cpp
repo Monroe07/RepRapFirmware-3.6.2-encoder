@@ -300,6 +300,12 @@ void ExpansionManager::ProcessDriveStatusReport(const CanMessageBuffer *buf) noe
 	if (board.HasDrivers())
 	{
 		const CanMessageDriversStatus& msg = buf->msg.driversStatus;
+		const size_t driversStatusHeaderLength = 2 * sizeof(uint16_t);
+		const size_t closedLoopEntryLength = sizeof(CanMessageDriversStatus::ClosedLoopStatus);
+		const bool hasEncoderPositionData =
+			msg.hasClosedLoopData &&
+			buf->dataLength >= driversStatusHeaderLength + msg.numDriversReported * closedLoopEntryLength;
+
 		for (size_t driver = 0; driver < min<size_t>(board.numDrivers, msg.numDriversReported); ++driver)
 		{
 			DriverData& dd = board.driverData[driver];
@@ -320,6 +326,21 @@ void ExpansionManager::ProcessDriveStatusReport(const CanMessageBuffer *buf) noe
 
 		// TODO
 		(void)msg;
+	}
+}
+
+void ExpansionManager::ProcessClosedLoopEncoderPositionsReport(const CanMessageBuffer *buf) noexcept
+{
+	const CanAddress address = buf->id.Src();
+	ExpansionBoardData& board = boards[address];
+	if (board.HasDrivers())
+	{
+		const CanMessageClosedLoopEncoderPositions& msg = buf->msg.closedLoopEncoderPositions;
+		for (size_t driver = 0; driver < min<size_t>(board.numDrivers, msg.numDriversReported); ++driver)
+		{
+			DriverData& dd = board.driverData[driver];
+			dd.encoderPosition = msg.encoderPosition[driver];
+		}
 	}
 }
 

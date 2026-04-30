@@ -649,6 +649,10 @@ void CommandProcessor::ProcessReceivedMessage(CanMessageBuffer *buf) noexcept
 				reprap.GetExpansion().ProcessDriveStatusReport(buf);
 				break;
 
+			case CanMessageType::closedLoopEncoderPositionsReport:
+				reprap.GetExpansion().ProcessClosedLoopEncoderPositionsReport(buf);
+				break;
+
 			case CanMessageType::boardStatusReport:
 				reprap.GetExpansion().ProcessBoardStatusReport(buf);
 				break;

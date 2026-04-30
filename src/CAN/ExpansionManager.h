@@ -61,6 +61,7 @@ public:
 	void ProcessAnnouncement(CanMessageBuffer *buf, bool isNewFormat) noexcept;
 	void ProcessBoardStatusReport(const CanMessageBuffer *buf) noexcept;
 	void ProcessDriveStatusReport(const CanMessageBuffer *buf) noexcept;
+	void ProcessClosedLoopEncoderPositionsReport(const CanMessageBuffer *buf) noexcept;
 
 	// Firmware update and related functions
 	GCodeResult ResetRemote(uint32_t boardAddress, GCodeBuffer& gb, const StringRef& reply) THROWS(GCodeException);
